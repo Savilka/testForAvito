@@ -1,0 +1,223 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Набор API-методов",
+    "description": "",
+    "version": "1.0.0"
+  },
+  "host": "localhost",
+  "basePath": "/v1",
+  "paths": {
+    "/user/add": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Добавление пользователя",
+        "description": "Добавление пользователя",
+        "responses": {
+          "200": {
+            "description": "Пользователь успешно добавлен",
+            "schema": {
+              "description": "id пользователя",
+              "type": "string",
+              "example": "1"
+            }
+          },
+          "500": {
+            "description": "Ошибка на сервере"
+          }
+        }
+      }
+    },
+    "/user/{id}/getSegments": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Получение сегментов пользователя",
+        "description": "Получение сегментов пользователя",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id пользователя",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Сегменты пользователя",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "AVITO_VOICE_MESSAGES",
+                "AVITO_PERFORMANCE_VAS"
+              ]
+            }
+          },
+          "500": {
+            "description": "Ошибка на сервере"
+          }
+        }
+      }
+    },
+    "/user/{id}/addSegments": {
+      "put": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Добавить пользователя в сегменты",
+        "description": "Добавить пользователя в сегменты",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id пользователя",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "new_segments",
+            "in": "body",
+            "description": "Сегменты для добавления",
+            "schema": {
+              "type": "object",
+              "required": [
+                "new_segments",
+                "old_segments"
+              ],
+              "properties": {
+                "new_segments": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "example": "AVITO_VOICE_MESSAGES"
+                      },
+                      "ttl": {
+                        "type": "number",
+                        "example": 86400
+                      }
+                    }
+                  }
+                },
+                "old_segments": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "example": "AVITO_VOICE_MESSAGES"
+                      },
+                      "ttl": {
+                        "type": "number",
+                        "example": 86400
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Сегменты добавлены"
+          },
+          "500": {
+            "description": "Ошибка на сервере"
+          }
+        }
+      }
+    },
+    "/segment/add": {
+      "post": {
+        "tags": [
+          "segment"
+        ],
+        "summary": "Добавить новый сегмент",
+        "description": "Добавить новый сегмент",
+        "parameters": [
+          {
+            "name": "request_data",
+            "required": true,
+            "description": "Название сегмента и процент пользователей",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "required": [
+                "slug"
+              ],
+              "properties": {
+                "slug": {
+                  "type": "string",
+                  "example": "AVITO_VOICE_MESSAGES"
+                },
+                "percent": {
+                  "type": "number",
+                  "example": 50,
+                  "minimum": 0,
+                  "maximum": 100
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "string",
+              "description": "Id сегмента",
+              "example": "1"
+            },
+            "description": "Сегмент успешно добавлен"
+          },
+          "500": {
+            "description": "Ошибка на сервере"
+          }
+        }
+      }
+    },
+    "/segment/delete": {
+      "delete": {
+        "summary": "Удалить сегмент",
+        "description": "Удалить сегмент",
+        "tags": [
+          "segment"
+        ],
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "slug": {
+                  "type": "string",
+                  "example": "AVITO_VOICE_MESSAGES"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Сегмент успешно удален"
+          },
+          "500": {
+            "description": "Ошибка на сервере"
+          }
+        }
+      }
+    }
+  }
+}
